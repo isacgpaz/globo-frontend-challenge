@@ -8,7 +8,6 @@ export function DirectorsTable({ data }: { data: Director[] }) {
         <TableRow>
           <TableHead>#</TableHead>
           <TableHead>Nome</TableHead>
-          <TableHead />
         </TableRow>
       </TableHeader>
       <TableBody>

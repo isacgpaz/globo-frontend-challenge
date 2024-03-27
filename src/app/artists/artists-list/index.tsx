@@ -4,12 +4,12 @@ import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useDirectors } from "@/modules/directors/list-directors";
+import { useArtists } from "@/modules/artists/list-artists";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useForm } from "react-hook-form";
-import { DirectorsTable } from "../directors-table";
+import { ArtistsTable } from "../artists-table";
 
-export function DirectorsList() {
+export function ArtistsList() {
   const form = useForm({
     defaultValues: {
       name: '',
@@ -19,12 +19,12 @@ export function DirectorsList() {
   const name = useDebounce(form.watch('name'), 500)
 
   const {
-    data: directorsResponse,
+    data: artistsResponse,
     isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useDirectors({
+  } = useArtists({
     filters: {
       page: 1,
       rowsPerPage: 10,
@@ -32,7 +32,7 @@ export function DirectorsList() {
     }
   })
 
-  const directors = directorsResponse?.pages.map((page) => page.result).flat() ?? []
+  const artists = artistsResponse?.pages.map((page) => page.result).flat() ?? []
 
   if (isLoading) {
     return (
@@ -59,9 +59,9 @@ export function DirectorsList() {
         </form>
       </Form>
 
-      {directors?.length ? (
+      {artists?.length ? (
         <>
-          <DirectorsTable data={directors ?? []} />
+          <ArtistsTable data={artists ?? []} />
 
           {hasNextPage && (
             <div className="w-full flex items-center justify-center">
