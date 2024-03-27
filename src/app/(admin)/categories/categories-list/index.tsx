@@ -4,12 +4,12 @@ import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useArtists } from "@/modules/artists/list-artists";
+import { useCategories } from "@/modules/categories/list-categories";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useForm } from "react-hook-form";
-import { ArtistsTable } from "../artists-table";
+import { CategoriesTable } from "../categories-table";
 
-export function ArtistsList() {
+export function CategoriesList() {
   const form = useForm({
     defaultValues: {
       name: '',
@@ -19,12 +19,12 @@ export function ArtistsList() {
   const name = useDebounce(form.watch('name'), 500)
 
   const {
-    data: artistsResponse,
+    data: categoriesResponse,
     isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useArtists({
+  } = useCategories({
     filters: {
       page: 1,
       rowsPerPage: 10,
@@ -32,7 +32,7 @@ export function ArtistsList() {
     }
   })
 
-  const artists = artistsResponse?.pages.map((page) => page.result).flat() ?? []
+  const categories = categoriesResponse?.pages.map((page) => page.result).flat() ?? []
 
   if (isLoading) {
     return (
@@ -59,9 +59,9 @@ export function ArtistsList() {
         </form>
       </Form>
 
-      {artists?.length ? (
+      {categories?.length ? (
         <>
-          <ArtistsTable data={artists ?? []} />
+          <CategoriesTable data={categories ?? []} />
 
           {hasNextPage && (
             <div className="w-full flex items-center justify-center">
@@ -78,7 +78,7 @@ export function ArtistsList() {
         </ >
       ) : (
         <p className="text-sm text-slate-500">
-          Nenhum usuário encontrado.
+          Nenhuma categoria encontrada.
         </p>
       )}
 

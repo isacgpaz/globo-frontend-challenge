@@ -78,7 +78,7 @@ export function DirectorsList() {
         </ >
       ) : (
         <p className="text-sm text-slate-500">
-          Nenhum usuário encontrado.
+          Nenhum diretor encontrado.
         </p>
       )}
 
