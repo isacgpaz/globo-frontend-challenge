@@ -14,7 +14,7 @@ export function HeaderDrawer() {
   return (
     <Drawer direction="left">
       <DrawerTrigger asChild>
-        <Button size='icon' variant='ghost' className="sm:hidden text-primary-foreground">
+        <Button size='icon' variant='ghost' className="lg:hidden text-primary-foreground">
           <AlignLeft className="w-4 h-4" />
         </Button>
       </DrawerTrigger>

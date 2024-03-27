@@ -29,7 +29,7 @@ export function Header() {
         </Button>
 
         <div className="flex gap-2 mr-2 sm:mr-0">
-          <div className="hidden sm:flex">
+          <div className="hidden lg:flex">
             <NavList />
           </div>
 

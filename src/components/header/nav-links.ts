@@ -1,6 +1,6 @@
-import { Clapperboard, Home, Popcorn } from "lucide-react";
+import { Clapperboard, Home, Megaphone, Popcorn, Stars, Tag, Users } from "lucide-react";
 
-export const NAV_LINKS = [
+export const PUBLIC_NAV_LINKS = [
   {
     href: '/',
     label: 'Início',
@@ -15,5 +15,28 @@ export const NAV_LINKS = [
     href: '/series',
     label: 'Séries',
     icon: Popcorn
+  },
+]
+
+export const ADMIN_NAV_LINKS = [
+  {
+    href: '/categories',
+    label: 'Categorias',
+    icon: Tag
+  },
+  {
+    href: '/directors',
+    label: 'Diretores',
+    icon: Megaphone
+  },
+  {
+    href: '/artists',
+    label: 'Artistas',
+    icon: Stars
+  },
+  {
+    href: '/users',
+    label: 'Usuários',
+    icon: Users
   },
 ]
