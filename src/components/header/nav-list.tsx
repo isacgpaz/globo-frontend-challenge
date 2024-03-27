@@ -4,7 +4,7 @@ import { NAV_LINKS } from "./nav-links";
 
 export function NavList() {
   return (
-    <nav className="flex-1 px-5 mt-4 sm:mt-0 sm:flex-none sm:px-5">
+    <nav className="flex-1 mt-4 sm:mt-0 sm:flex-none sm:px-5">
       <ul className="flex flex-col sm:flex-row sm:gap-6">
         {NAV_LINKS.map(({ href, label, icon: Icon }) => (
           <li key={href}>

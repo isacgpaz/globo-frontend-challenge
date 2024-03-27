@@ -1,4 +1,6 @@
 import { Header } from "@/components/header";
+import { Providers } from "@/components/providers";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Rubik as FontSans } from "next/font/google";
 import "./globals.css";
@@ -21,9 +23,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={fontSans.className}>
-        <Header />
+        <Providers>
+          <Header />
 
-        {children}
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

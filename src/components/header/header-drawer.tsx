@@ -1,5 +1,6 @@
-import { AlignLeft, CircleArrowLeft, LogIn } from "lucide-react";
+import { AlignLeft, CircleArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { SignInDialog } from "../sign-in-dialog";
 import { Button } from "../ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { Separator } from "../ui/separator";
@@ -33,12 +34,11 @@ export function HeaderDrawer() {
             </DrawerDescription>
           </DrawerHeader>
 
-          <NavList />
+          <div className="px-5 flex flex-col flex-1 mb-4">
+            <NavList />
 
-          <Button size='sm' className="mx-6 mb-4 transition-all hover:scale-95">
-            <LogIn className="w-4 h-4 mr-2" />
-            Entrar
-          </Button>
+            <SignInDialog />
+          </div>
 
           <Separator className="w-[75%] mx-auto bg-slate-800" />
 
