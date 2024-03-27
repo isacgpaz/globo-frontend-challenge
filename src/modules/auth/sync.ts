@@ -8,7 +8,9 @@ export async function sync() {
   return response.data
 }
 
-export const useSync = ({ enabled }: Pick<UseQueryOptions<{ user: User }, Error>, 'enabled'>) => {
+export const useSync = ({
+  enabled,
+}: Pick<UseQueryOptions<{ user: User }, Error>, 'enabled'>) => {
   return useQuery<{ user: User }, Error>({
     queryKey: ["sync"],
     queryFn: sync,

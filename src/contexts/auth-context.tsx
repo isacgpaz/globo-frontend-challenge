@@ -30,12 +30,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     isLoading,
     data: syncData,
     refetch: sync,
+    isError
   } = useSync({
     enabled: !!getCookie('@media-reviews:accessToken'),
   });
 
   const signOut = useCallback(() => {
     deleteCookie('@media-reviews:accessToken')
+    deleteCookie('@media-reviews:accessLevel')
     setUser(undefined)
     route.push('/')
   }, [route])
@@ -48,6 +50,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     user: User
   }) => {
     setCookie('@media-reviews:accessToken', accessToken)
+    setCookie('@media-reviews:accessLevel', user.accessLevel)
     setUser(user)
   }, [])
 
@@ -60,6 +63,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
     }
   }, [sync, syncData])
+
+  useEffect(() => {
+    if (isError) {
+      signOut()
+    }
+  }, [isError, signOut])
 
   const authProviderValue: AuthContextProps = useMemo(() => ({
     user,
