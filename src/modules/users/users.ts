@@ -21,7 +21,7 @@ type GetUsersParams = {
 }
 
 export async function getUsers(filters: GetUsersParams) {
-  const response = await api.get<GetUsersResponse>('/users', {
+  const response = await api.get<GetUsersResponse>('/user', {
     params: filters
   })
 
