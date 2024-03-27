@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
+import { CreateUserDialog } from "./create-user-dialog";
 import { UsersList } from "./users-list";
 
 export default function Users() {
@@ -10,10 +9,7 @@ export default function Users() {
           Usuários
         </h2>
 
-        <Button size='sm'>
-          <UserPlus className="mr-2 w-4 h-4" />
-          Novo
-        </Button>
+        <CreateUserDialog />
       </header>
 
       <UsersList />
