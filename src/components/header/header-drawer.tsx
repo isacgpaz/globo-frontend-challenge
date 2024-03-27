@@ -1,12 +1,16 @@
+import { useAuthContext } from "@/contexts/auth-context";
 import { AlignLeft, CircleArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { SignInDialog } from "../sign-in-dialog";
+import { SignOutDialog } from "../sign-out-dialog";
 import { Button } from "../ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { Separator } from "../ui/separator";
 import { NavList } from "./nav-list";
 
 export function HeaderDrawer() {
+  const { user } = useAuthContext();
+
   return (
     <Drawer direction="left">
       <DrawerTrigger asChild>
@@ -37,7 +41,7 @@ export function HeaderDrawer() {
           <div className="px-5 flex flex-col flex-1 mb-4">
             <NavList />
 
-            <SignInDialog />
+            {user ? <SignOutDialog /> : <SignInDialog />}
           </div>
 
           <Separator className="w-[75%] mx-auto bg-slate-800" />

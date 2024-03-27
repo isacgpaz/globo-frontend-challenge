@@ -15,7 +15,8 @@ type AuthContextProps = {
     accessToken: string,
     user: User
   }) => void,
-  isLoading: boolean
+  isLoading: boolean,
+  signOut: () => void
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -63,11 +64,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const authProviderValue: AuthContextProps = useMemo(() => ({
     user,
     isLoading,
-    storageUser
+    storageUser,
+    signOut
   }), [
     user,
     isLoading,
-    storageUser
+    storageUser,
+    signOut
   ])
 
   return (

@@ -1,13 +1,16 @@
 'use client'
 
+import { useAuthContext } from "@/contexts/auth-context";
 import { useIsClient } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { SignInDialog } from "../sign-in-dialog";
+import { SignOutDialog } from "../sign-out-dialog";
 import { Button } from "../ui/button";
 import { HeaderDrawer } from "./header-drawer";
 import { NavList } from "./nav-list";
 
 export function Header() {
+  const { user } = useAuthContext();
   const isClient = useIsClient()
 
   if (isClient === false) {
@@ -30,7 +33,7 @@ export function Header() {
             <NavList />
           </div>
 
-          <SignInDialog />
+          {user ? <SignOutDialog /> : <SignInDialog />}
         </div>
       </div>
     </header>
