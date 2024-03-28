@@ -39,7 +39,7 @@ export function DatePicker({
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
 
-          {date ? dayjs(date).format("dd/MM/yyyy") : <span>{label}</span>}
+          {date ? dayjs(date).format("DD/MM/YYYY") : <span>{label}</span>}
         </Button>
       </PopoverTrigger>
 

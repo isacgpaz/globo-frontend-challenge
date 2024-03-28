@@ -69,7 +69,7 @@ export function MediasTable({ data }: { data: Omit<Media, 'movie' | 'serie' | 'd
             <TableRow key={media.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{media.title}</TableCell>
-              <TableCell>{2024}</TableCell>
+              <TableCell>{dayjs(media.releaseDate).format('DD/MM/YYYY')}</TableCell>
               <TableCell>
                 <Button
                   onClick={() => selectMedia(media.id)}
