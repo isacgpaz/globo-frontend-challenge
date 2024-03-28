@@ -13,14 +13,15 @@ import { useDirectors } from "@/modules/directors/list-directors";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { MediaFiltersSchema } from "../medias-list/schema";
+import { MediaFiltersSchema } from "../../app/(admin)/medias/admin-medias-list/schema";
 
 export function MediaFiltersForm({
   className,
   isDesktop,
   form,
   setAdvancedsFilters,
-  setOpen
+  setOpen,
+  hideFields
 }: React.ComponentProps<"div"> & {
   isDesktop: boolean,
   setOpen: (open: boolean) => void,
@@ -29,7 +30,8 @@ export function MediaFiltersForm({
     directorId?: string;
     artistsIds?: string[];
     categoriesIds?: string[];
-  }) => void
+  }) => void,
+  hideFields?: string[]
 }) {
   const [categoriesSearch, setCategoriesSearch] = useState('')
   const debouncedCategoriesSearch = useDebounce(categoriesSearch, 500)
@@ -83,53 +85,55 @@ export function MediaFiltersForm({
     >
       <ScrollArea className="h-[360px] ">
         <div className="m-1">
-          <FormField
-            control={form.control}
-            name="categoriesIds"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Categorias</FormLabel>
-                <MultipleSelector
-                  triggerSearchOnFocus
-                  value={
-                    categories
-                      .filter(
-                        (category) => field.value.includes(category.id)
-                      ).map(
-                        (category) => ({
-                          label: category.name,
-                          value: category.id
-                        }
-                        ))
-                  }
-                  onChange={(options) => field.onChange(
-                    options.map(option => option.value)
-                  )}
-                  defaultOptions={categories.map((category) => ({
-                    label: category.name,
-                    value: category.id
-                  }))}
-                  onSearch={async (value) => {
-                    setCategoriesSearch(value)
-                    return categories.map((category) => ({
+          {!hideFields?.includes("categoriesIds") && (
+            <FormField
+              control={form.control}
+              name="categoriesIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categorias</FormLabel>
+                  <MultipleSelector
+                    triggerSearchOnFocus
+                    value={
+                      categories
+                        .filter(
+                          (category) => field.value?.includes(category.id)
+                        ).map(
+                          (category) => ({
+                            label: category.name,
+                            value: category.id
+                          }
+                          ))
+                    }
+                    onChange={(options) => field.onChange(
+                      options.map(option => option.value)
+                    )}
+                    defaultOptions={categories.map((category) => ({
                       label: category.name,
                       value: category.id
-                    }))
-                  }}
-                  placeholder="Selecionar categorias"
-                  loadingIndicator={
-                    <Loader />
-                  }
-                  emptyIndicator={
-                    <p className="w-full text-center text-sm leading-10 text-slate-500">
-                      Nenhum resultado encontrado.
-                    </p>
-                  }
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    }))}
+                    onSearch={async (value) => {
+                      setCategoriesSearch(value)
+                      return categories.map((category) => ({
+                        label: category.name,
+                        value: category.id
+                      }))
+                    }}
+                    placeholder="Selecionar categorias"
+                    loadingIndicator={
+                      <Loader />
+                    }
+                    emptyIndicator={
+                      <p className="w-full text-center text-sm leading-10 text-slate-500">
+                        Nenhum resultado encontrado.
+                      </p>
+                    }
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
@@ -173,7 +177,7 @@ export function MediaFiltersForm({
                   value={
                     artists
                       .filter(
-                        (artist) => field.value.includes(artist.id)
+                        (artist) => field.value?.includes(artist.id)
                       ).map(
                         (artist) => ({
                           label: artist.name,

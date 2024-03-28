@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MediaFiltersDialog } from "../medias-filters-dialog";
+import { MediaFiltersDialog } from "../../../../components/medias-filters-dialog";
 import { MediasTable } from "../medias-table";
 import { MediaFiltersSchema, mediaFiltersSchema, mediaFiltersType } from "./schema";
 
@@ -30,7 +30,7 @@ const mediaTypeOptions = [
   },
 ]
 
-export function MediasList() {
+export function AdminMediasList() {
   const [open, setOpen] = useState(false)
   const [advancedsFilters, setAdvancedsFilters] = useState<{
     directorId?: string;
@@ -161,7 +161,6 @@ export function MediasList() {
           Nenhuma mídia encontrada.
         </p>
       )}
-
     </>
   )
 }

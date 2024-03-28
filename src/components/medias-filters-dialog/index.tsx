@@ -7,14 +7,15 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Filter } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { MediaFiltersSchema } from "../medias-list/schema";
 import { MediaFiltersForm } from "./media-filters-form";
+import { MediaFiltersSchema } from "./schema";
 
 export function MediaFiltersDialog({
   open,
   setOpen,
   form,
-  setAdvancedsFilters
+  setAdvancedsFilters,
+  hideFields
 }: {
   open: boolean,
   setOpen: (open: boolean) => void,
@@ -23,7 +24,8 @@ export function MediaFiltersDialog({
     directorId?: string;
     artistsIds?: string[];
     categoriesIds?: string[];
-  }) => void
+  }) => void,
+  hideFields?: string[]
 }) {
   const isDesktop = useMediaQuery(
     "only screen and (min-width: 768px)"
@@ -51,6 +53,7 @@ export function MediaFiltersDialog({
             setOpen={setOpen}
             form={form}
             setAdvancedsFilters={setAdvancedsFilters}
+            hideFields={hideFields}
           />
         </DialogContent>
       </Dialog>
@@ -78,6 +81,7 @@ export function MediaFiltersDialog({
           setOpen={setOpen}
           form={form}
           setAdvancedsFilters={setAdvancedsFilters}
+          hideFields={hideFields}
         />
       </DrawerContent>
     </Drawer>
