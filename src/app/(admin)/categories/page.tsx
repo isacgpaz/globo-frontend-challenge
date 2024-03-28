@@ -1,7 +1,15 @@
+'use client'
+
+import { useIsClient } from "@uidotdev/usehooks";
 import { CategoriesList } from "./categories-list";
 import { CreateCategoryDialog } from "./create-category-dialog";
 
-export default function Artists() {
+export default function Categories() {
+  const isClient = useIsClient()
+
+  if (isClient === false) {
+    return null
+  }
   return (
     <div className="bg-gray-900 text-white min-h-screen p-6">
       <div className="lg:max-w-5xl mx-auto">

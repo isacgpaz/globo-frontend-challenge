@@ -8,7 +8,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useUsers } from "@/modules/users/list-users";
 import { UserStatus } from "@/types/user";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { UsersTable } from "../users-table";
 
@@ -24,8 +23,6 @@ const userStatusOptions = [
 ]
 
 export function UsersList() {
-  const [page, setPage] = useState(1)
-
   const form = useForm({
     defaultValues: {
       name: '',
@@ -43,7 +40,7 @@ export function UsersList() {
     isFetchingNextPage
   } = useUsers({
     filters: {
-      page,
+      page: 1,
       rowsPerPage: 10,
       name,
       status: form.watch('status')
