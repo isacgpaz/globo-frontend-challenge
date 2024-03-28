@@ -7,27 +7,43 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useMedias } from "@/modules/medias/list-medias";
 import { MediaType } from "@/types/media";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebounce } from "@uidotdev/usehooks";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { MediaFiltersDialog } from "../medias-filters-dialog";
 import { MediasTable } from "../medias-table";
+import { MediaFiltersSchema, mediaFiltersSchema, mediaFiltersType } from "./schema";
 
 const mediaTypeOptions = [
   {
     label: 'Todos',
-    value: 'all'
+    value: mediaFiltersType.Values.all
   },
   {
     label: 'Filmes',
-    value: MediaType.MOVIE,
+    value: mediaFiltersType.Values.MOVIE,
   },
   {
     label: 'Séries',
-    value: MediaType.SERIE,
+    value: mediaFiltersType.Values.SERIE,
   },
 ]
 
 export function MediasList() {
-  const form = useForm({
+  const [open, setOpen] = useState(false)
+  const [advancedsFilters, setAdvancedsFilters] = useState<{
+    directorId?: string;
+    artistsIds?: string[];
+    categoriesIds?: string[];
+  }>({
+    directorId: undefined,
+    artistsIds: [],
+    categoriesIds: []
+  })
+
+  const form = useForm<MediaFiltersSchema>({
+    resolver: zodResolver(mediaFiltersSchema),
     defaultValues: {
       title: '',
       type: mediaTypeOptions[0].value,
@@ -51,7 +67,8 @@ export function MediasList() {
       page: 1,
       rowsPerPage: 10,
       title,
-      type: type === 'all' ? undefined : type as MediaType
+      type: type === 'all' ? undefined : type as MediaType,
+      ...advancedsFilters
     }
   })
 
@@ -67,18 +84,27 @@ export function MediasList() {
     <>
       <Form {...form}>
         <form className="mb-4">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem className="space-y-3 flex items-center gap-2">
-                <FormLabel className="mt-4">Título:</FormLabel>
-                <FormControl>
-                  <Input {...field} className="text-black" placeholder="Pesquisar por título" />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem className="flex items-center gap-2 flex-1 space-y-0">
+                  <FormLabel>Título:</FormLabel>
+                  <FormControl>
+                    <Input {...field} className="text-black mt-0" placeholder="Pesquisar por título" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <MediaFiltersDialog
+              open={open}
+              setOpen={setOpen}
+              form={form}
+              setAdvancedsFilters={setAdvancedsFilters}
+            />
+          </div>
 
           <FormField
             control={form.control}
