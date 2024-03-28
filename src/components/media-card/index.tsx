@@ -12,7 +12,7 @@ export function MediaCard({
 }) {
   return (
     <HoverCard.Root openDelay={500}>
-      <Link href={`/movies/${media.id}`}>
+      <Link href={`/medias/${media.id}`}>
         <HoverCard.Trigger asChild>
           <Card className="max-w-lg px-6 pt-20 pb-6 bg-gradient-to-tr from-slate-950 to-blue-950 border-slate-800 shadow-2xl rounded-2xl cursor-pointer hover:scale-95 transition-all">
             <CardTitle className="text-base sm:text-xl text-primary-foreground text-ellipsis text-nowrap">

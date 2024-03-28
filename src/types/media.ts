@@ -29,7 +29,7 @@ export type Media = {
   serieId: string | null,
   artists: Artist[]
   categories: Category[]
-  director: Director[]
+  director: Director
   serie: Serie | null,
   movie: Movie | null
 }
