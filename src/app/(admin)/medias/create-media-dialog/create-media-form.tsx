@@ -62,9 +62,6 @@ export function CreateMediaForm({
 
   const values = form.watch()
 
-  console.log(form.formState.errors)
-  console.log(form.watch())
-
   const [categoriesSearch, setCategoriesSearch] = useState('')
   const debouncedCategoriesSearch = useDebounce(categoriesSearch, 500)
 

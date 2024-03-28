@@ -2,7 +2,6 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { useCreateMediaContext } from "@/contexts/create-media-context";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { CreateMediaForm } from "./create-media-form";
@@ -17,8 +16,6 @@ export function CreateMediaDialog({
   setOpen: (open: boolean) => void,
   mode?: 'update' | 'create'
 }) {
-  const { setMedia, media } = useCreateMediaContext()
-
   const isDesktop = useMediaQuery(
     "only screen and (min-width: 768px)"
   );
@@ -29,13 +26,7 @@ export function CreateMediaDialog({
   if (isDesktop) {
     return (
       <>
-        <Dialog open={open} onOpenChange={(open) => {
-          if (!open) {
-            setMedia(undefined)
-          }
-
-          setOpen(open)
-        }}>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent className="max-w-sm">
             <DialogHeader className="justify-center items-center space-y-0">
               <DialogTitle className="text-2xl">
@@ -68,13 +59,7 @@ export function CreateMediaDialog({
 
   return (
     <>
-      <Drawer open={open} onOpenChange={(open) => {
-        if (!open) {
-          setMedia(undefined)
-        }
-
-        setOpen(open)
-      }}>
+      <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent showIsland={false}>
           <DrawerHeader className="mt-2 gap-0">
             <DrawerTitle className="text-2xl">

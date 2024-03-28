@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { CreateMediaProvider } from "@/contexts/create-media-context";
+import { CreateMediaProvider, useCreateMediaContext } from "@/contexts/create-media-context";
 import { useIsClient } from "@uidotdev/usehooks";
 import { Clapperboard } from "lucide-react";
 import { useState } from "react";
@@ -10,8 +10,6 @@ import { MediasList } from "./medias-list";
 
 export default function Medias() {
   const isClient = useIsClient()
-
-  const [open, setOpen] = useState(false);
 
   if (isClient === false) {
     return null
@@ -26,21 +24,35 @@ export default function Medias() {
               Mídias
             </h2>
 
-            <Button size='sm' onClick={() => setOpen(true)}>
-              <Clapperboard className="mr-2 w-4 h-4" />
-              Novo
-            </Button>
+            <CreateMedia />
           </header>
 
           <MediasList />
         </div>
       </div>
+    </CreateMediaProvider>
+  )
+}
+
+function CreateMedia() {
+  const [open, setOpen] = useState(false);
+  const { setMedia } = useCreateMediaContext()
+
+  return (
+    <>
+      <Button size='sm' onClick={() => {
+        setMedia(undefined)
+        setOpen(true)
+      }}>
+        <Clapperboard className="mr-2 w-4 h-4" />
+        Novo
+      </Button>
 
       <CreateMediaDialog
         open={open}
         setOpen={setOpen}
         mode="create"
       />
-    </CreateMediaProvider>
+    </>
   )
 }
