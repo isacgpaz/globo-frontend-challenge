@@ -51,6 +51,8 @@ export default function Media() {
           title={media.title}
           duration={duration}
           type={media.type}
+          mediaId={media.id}
+          rate={media.averageRate}
         />
 
         <MediaInfo
