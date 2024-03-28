@@ -1,42 +1,46 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { useIsClient, useMediaQuery } from "@uidotdev/usehooks";
-import { Clapperboard } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { useCreateMediaContext } from "@/contexts/create-media-context";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { CreateMediaForm } from "./create-media-form";
 import { CreateSeasonDialog } from "./create-season-dialog";
 
-export function CreateMediaDialog() {
-  const isClient = useIsClient()
+export function CreateMediaDialog({
+  open,
+  setOpen,
+  mode
+}: {
+  open: boolean,
+  setOpen: (open: boolean) => void,
+  mode?: 'update' | 'create'
+}) {
+  const { setMedia, media } = useCreateMediaContext()
 
   const isDesktop = useMediaQuery(
     "only screen and (min-width: 768px)"
   );
 
-  const [open, setOpen] = useState(false);
   const [createSeasonDialogOpen, setCreateSeasonDialogOpen] = useState(false)
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState<number>(0)
-
-  if (isClient === false) {
-    return null
-  }
 
   if (isDesktop) {
     return (
       <>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button size='sm'>
-              <Clapperboard className="mr-2 w-4 h-4" />
-              Novo
-            </Button>
-          </DialogTrigger>
+        <Dialog open={open} onOpenChange={(open) => {
+          if (!open) {
+            setMedia(undefined)
+          }
+
+          setOpen(open)
+        }}>
           <DialogContent className="max-w-sm">
             <DialogHeader className="justify-center items-center space-y-0">
-              <DialogTitle className="text-2xl">Criar nova mídia</DialogTitle>
+              <DialogTitle className="text-2xl">
+                {mode === 'create' ? 'Criar nova' : 'Editar'} mídia
+              </DialogTitle>
             </DialogHeader>
 
             <CreateMediaForm
@@ -44,6 +48,7 @@ export function CreateMediaDialog() {
               setOpen={setOpen}
               setCreateSeasonDialogOpen={setCreateSeasonDialogOpen}
               setSelectedSeasonIndex={setSelectedSeasonIndex}
+              mode={mode}
             />
           </DialogContent>
         </Dialog>
@@ -55,6 +60,7 @@ export function CreateMediaDialog() {
             setCreateSeasonDialogOpen(open)
           }}
           seasonIndex={selectedSeasonIndex}
+          isDesktop
         />
       </>
     )
@@ -62,16 +68,18 @@ export function CreateMediaDialog() {
 
   return (
     <>
-      <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>
-          <Button size='sm'>
-            <Clapperboard className="mr-2 w-4 h-4" />
-            Novo
-          </Button>
-        </DrawerTrigger>
+      <Drawer open={open} onOpenChange={(open) => {
+        if (!open) {
+          setMedia(undefined)
+        }
+
+        setOpen(open)
+      }}>
         <DrawerContent showIsland={false}>
           <DrawerHeader className="mt-2 gap-0">
-            <DrawerTitle className="text-2xl">Criar nova mídia</DrawerTitle>
+            <DrawerTitle className="text-2xl">
+              {mode === 'create' ? 'Criar nova' : 'Editar'} mídia
+            </DrawerTitle>
           </DrawerHeader>
 
           <CreateMediaForm
@@ -80,6 +88,7 @@ export function CreateMediaDialog() {
             setOpen={setOpen}
             setCreateSeasonDialogOpen={setCreateSeasonDialogOpen}
             setSelectedSeasonIndex={setSelectedSeasonIndex}
+            mode={mode}
           />
         </DrawerContent>
       </Drawer>
@@ -91,6 +100,7 @@ export function CreateMediaDialog() {
           setCreateSeasonDialogOpen(open)
         }}
         seasonIndex={selectedSeasonIndex}
+        isDesktop={false}
       />
     </>
   )

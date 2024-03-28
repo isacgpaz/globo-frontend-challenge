@@ -26,7 +26,7 @@ export function CreateSeasonForm({
 }) {
   const { media, setMedia } = useCreateMediaContext()
 
-  const currentSeason = media.serie?.seasons[seasonIndex]
+  const currentSeason = media?.serie?.seasons[seasonIndex]
 
   const form = useForm<CreateSeasonSchema>({
     resolver: zodResolver(createSeasonSchema),
@@ -47,7 +47,7 @@ export function CreateSeasonForm({
   })
 
   async function handleCreateSeason(season: CreateSeasonSchema) {
-    const serie = media.serie ?? { seasons: [] }
+    const serie = media?.serie ?? { seasons: [] }
 
     if (currentSeason) {
       serie.seasons.splice(seasonIndex, 1, season)
@@ -177,7 +177,7 @@ export function CreateSeasonForm({
               className="w-full"
               type='submit'
             >
-              {currentSeason ? 'Atualizar' : 'Adicionar'} temporada - {form.watch('episodes').length} EP
+              {currentSeason ? 'Atualizar' : 'Adicionar'} temporada - {form.watch('episodes')?.length} EP
             </Button>
 
             <DialogClose asChild>
@@ -189,7 +189,7 @@ export function CreateSeasonForm({
         ) : (
           <DrawerFooter className="mt-2 px-0">
             <Button type='submit'>
-              {currentSeason ? 'Atualizar' : 'Adicionar'} temporada - {form.watch('episodes').length} EP
+              {currentSeason ? 'Atualizar' : 'Adicionar'} temporada - {form.watch('episodes')?.length} EP
             </Button>
 
             <DrawerClose asChild>

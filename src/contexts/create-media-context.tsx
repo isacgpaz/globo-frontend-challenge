@@ -4,14 +4,14 @@ import { CreateMediaSchema } from "@/app/(admin)/medias/create-media-dialog/sche
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useMemo, useState } from "react";
 
 type CreateMediaContextProps = {
-  media: Partial<CreateMediaSchema>,
-  setMedia: Dispatch<SetStateAction<Partial<CreateMediaSchema>>>
+  media: Partial<CreateMediaSchema & { id: string }> | undefined,
+  setMedia: Dispatch<SetStateAction<Partial<CreateMediaSchema & { id: string }> | undefined>>
 }
 
 export const CreateMediaContext = createContext({} as CreateMediaContextProps)
 
 export function CreateMediaProvider({ children }: PropsWithChildren) {
-  const [media, setMedia] = useState<Partial<CreateMediaSchema>>({});
+  const [media, setMedia] = useState<Partial<CreateMediaSchema & { id: string }> | undefined>(undefined);
 
   const createMediaContext: CreateMediaContextProps = useMemo(() => ({
     media,

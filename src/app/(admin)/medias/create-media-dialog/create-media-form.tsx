@@ -19,6 +19,7 @@ import { useArtists } from "@/modules/artists/list-artists";
 import { useCategories } from "@/modules/categories/list-categories";
 import { useDirectors } from "@/modules/directors/list-directors";
 import { useCreateMedia } from "@/modules/medias/create-media";
+import { useUpdateMedia } from "@/modules/medias/update-media";
 import { MediaType, ParentalRating } from "@/types/media";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -33,31 +34,36 @@ export function CreateMediaForm({
   setOpen,
   setCreateSeasonDialogOpen,
   setSelectedSeasonIndex,
+  mode
 }: React.ComponentProps<"form"> & {
   isDesktop: boolean,
   setOpen: (open: boolean) => void,
   setCreateSeasonDialogOpen: (open: boolean) => void,
   setSelectedSeasonIndex: (index: number) => void,
+  mode?: 'update' | 'create',
 }) {
   const { media, setMedia } = useCreateMediaContext()
 
   const form = useForm<CreateMediaSchema>({
     resolver: zodResolver(createMediaSchema),
     defaultValues: {
-      title: media.title ?? '',
-      description: media.description ?? '',
-      releaseDate: media.releaseDate ?? undefined,
-      type: media.type ?? MediaType.MOVIE,
-      artistsIds: media.artistsIds ?? [],
-      categoriesIds: media.categoriesIds ?? [],
-      directorId: media.directorId ?? undefined,
-      parentalRating: media.parentalRating ?? ParentalRating.G,
-      movie: media.movie ?? undefined,
-      serie: media.serie ?? undefined
+      title: media?.title ?? '',
+      description: media?.description ?? '',
+      releaseDate: media?.releaseDate ?? undefined,
+      type: media?.type ?? MediaType.MOVIE,
+      artistsIds: media?.artistsIds ?? [],
+      categoriesIds: media?.categoriesIds ?? [],
+      directorId: media?.directorId ?? undefined,
+      parentalRating: media?.parentalRating ?? ParentalRating.G,
+      movie: media?.movie ?? undefined,
+      serie: media?.serie ?? undefined
     }
   });
 
   const values = form.watch()
+
+  console.log(form.formState.errors)
+  console.log(form.watch())
 
   const [categoriesSearch, setCategoriesSearch] = useState('')
   const debouncedCategoriesSearch = useDebounce(categoriesSearch, 500)
@@ -88,43 +94,79 @@ export function CreateMediaForm({
   const categories = categoriesResponse?.pages.map((page) => page.result).flat() ?? []
   const artists = artistsResponse?.pages.map((page) => page.result).flat() ?? []
 
-  const { mutate: createMedia, isPending } = useCreateMedia()
+  const { mutate: createMedia, isPending: isCreateMediaPending } = useCreateMedia()
+  const { mutate: updateMedia, isPending: isUpdateMediaPending } = useUpdateMedia()
+
+  const isPending = isCreateMediaPending && isUpdateMediaPending
 
   async function handleCreateMedia(values: CreateMediaSchema) {
-    let createMediaData = {
+    let mediaData = {
       ...values,
       releaseDate: dayjs(values.releaseDate).toISOString()
     }
 
     if (values.type === MediaType.MOVIE) {
-      delete createMediaData.serie
+      delete mediaData.serie
     }
 
     if (values.type === MediaType.SERIE) {
-      delete createMediaData.movie
+      delete mediaData.movie
     }
 
-    createMedia(createMediaData, {
-      onSuccess() {
-        toast({
-          description: 'Mídia criada com sucesso.',
-          variant: 'success'
-        })
+    if (mode === 'update' && media?.id) {
+      updateMedia({
+        ...mediaData,
+        id: media.id
+      }, {
+        onSuccess() {
+          toast({
+            description: 'Mídia atualizada com sucesso.',
+            variant: 'success'
+          })
 
-        queryClient.invalidateQueries({
-          queryKey: ['medias']
-        })
+          queryClient.invalidateQueries({
+            queryKey: ['medias']
+          })
 
-        setOpen(false)
-        form.reset()
-      },
-      onError() {
-        toast({
-          description: 'Ops, aconteceu um erro.',
-          variant: 'destructive'
-        })
-      }
-    })
+          queryClient.invalidateQueries({
+            queryKey: ['media']
+          })
+
+          setOpen(false)
+          form.reset()
+        },
+        onError() {
+          toast({
+            description: 'Ops, aconteceu um erro.',
+            variant: 'destructive'
+          })
+        }
+      })
+    }
+
+    if (mode === 'create') {
+      createMedia(mediaData, {
+        onSuccess() {
+          toast({
+            description: 'Mídia criada com sucesso.',
+            variant: 'success'
+          })
+
+          queryClient.invalidateQueries({
+            queryKey: ['medias']
+          })
+
+          setOpen(false)
+          form.reset()
+        },
+        onError() {
+          toast({
+            description: 'Ops, aconteceu um erro.',
+            variant: 'destructive'
+          })
+        }
+      })
+    }
   }
 
   return (
@@ -150,11 +192,19 @@ export function CreateMediaForm({
             }}
           >
             <TabsList>
-              <TabsTrigger value={MediaType.MOVIE} className="data-[state=active]:text-primary">
+              <TabsTrigger
+                value={MediaType.MOVIE}
+                disabled={MediaType.MOVIE !== media?.type && mode === 'update'}
+                className="data-[state=active]:text-primary disabled:cursor-not-allowed"
+              >
                 Filme
               </TabsTrigger>
 
-              <TabsTrigger value={MediaType.SERIE} className="data-[state=active]:text-primary">
+              <TabsTrigger
+                value={MediaType.SERIE}
+                disabled={MediaType.SERIE !== media?.type && mode === 'update'}
+                className="data-[state=active]:text-primary"
+              >
                 Série
               </TabsTrigger>
             </TabsList>
@@ -357,12 +407,12 @@ export function CreateMediaForm({
                     Temporadas
                   </FormLabel>
 
-                  {form.watch('serie.seasons') && (
+                  {form.watch('serie.seasons').length && (
                     <ul>
                       {form.watch('serie.seasons').map((season, index) => (
                         <li key={index} className="flex items-center justify-between gap-4">
                           <span className="text-xs block">
-                            Temporada {index + 1} ({season.episodes.length} episódios)
+                            Temporada {index + 1} ({season.episodes?.length} episódios)
                           </span>
 
                           <div>
@@ -375,7 +425,7 @@ export function CreateMediaForm({
                                 setMedia((media) => ({
                                   ...media,
                                   serie: {
-                                    seasons: media.serie ? media.serie?.seasons.filter(
+                                    seasons: media?.serie ? media.serie?.seasons.filter(
                                       (_, seasonIndex) => seasonIndex !== index
                                     ) : []
                                   }
@@ -431,7 +481,7 @@ export function CreateMediaForm({
               type='submit'
               isLoading={isPending}
             >
-              Criar mídia
+              Salvar mídia
             </Button>
 
             <DialogClose asChild>
@@ -446,7 +496,7 @@ export function CreateMediaForm({
               type='submit'
               isLoading={isPending}
             >
-              Criar mídia
+              Salvar mídia
             </Button>
 
             <DrawerClose asChild>

@@ -38,6 +38,7 @@ export function MediasList() {
   });
 
   const title = useDebounce(form.watch('title'), 500)
+  const type = form.watch('type')
 
   const {
     data: mediasResponse,
@@ -50,7 +51,7 @@ export function MediasList() {
       page: 1,
       rowsPerPage: 10,
       title,
-      type: form.watch('type') === 'all' ? undefined : form.watch('type')
+      type: type === 'all' ? undefined : type as MediaType
     }
   })
 
