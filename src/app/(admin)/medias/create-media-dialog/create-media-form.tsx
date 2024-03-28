@@ -407,7 +407,7 @@ export function CreateMediaForm({
                     Temporadas
                   </FormLabel>
 
-                  {form.watch('serie.seasons').length && (
+                  {form.watch('serie.seasons')?.length && (
                     <ul>
                       {form.watch('serie.seasons').map((season, index) => (
                         <li key={index} className="flex items-center justify-between gap-4">
