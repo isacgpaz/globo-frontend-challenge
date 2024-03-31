@@ -18,7 +18,7 @@ export function UsersTable({ data }: { data: User[] }) {
           <TableHead>#</TableHead>
           <TableHead>Nome</TableHead>
           <TableHead>Email</TableHead>
-          <TableHead />
+          <TableHead>Opções</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -30,9 +30,8 @@ export function UsersTable({ data }: { data: User[] }) {
             <TableCell>
               {user.status === UserStatus.ENABLED ? (
                 <Button
-                  size='icon'
-                  variant='link'
-                  className="text-destructive"
+                  size='sm'
+                  variant="destructive"
                   onClick={() => blockUser({ userId: user.id }, {
                     onSuccess() {
                       toast({
@@ -47,13 +46,13 @@ export function UsersTable({ data }: { data: User[] }) {
                   })}
                   isLoading={isBlockUserPending}
                 >
-                  <Ban className="w-4 h-4" />
+                  <Ban className="w-4 h-4 mr-2" />
+                  Desabilitar
                 </Button>
               ) : (
                 <Button
-                  size='icon'
-                  variant='link'
-                  className="text-emerald-500"
+                  size='sm'
+                  className="bg-emerald-500 hover:bg-emerald-600"
                   onClick={() => enableUser({ userId: user.id }, {
                     onSuccess() {
                       toast({
@@ -68,7 +67,8 @@ export function UsersTable({ data }: { data: User[] }) {
                   })}
                   isLoading={isEnableUserPending}
                 >
-                  <Check className="w-4 h-4" />
+                  <Check className="w-4 h-4 mr-2" />
+                  Habilitar
                 </Button>
               )}
             </TableCell>
