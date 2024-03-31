@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useFieldArray, useForm } from "react-hook-form";
-import { CreateSeasonSchema, createSeasonSchema } from "./schema";
+import { SeasonSchema, seasonSchema } from "./schema";
 
-export function CreateSeasonForm({
+export function SeasonForm({
   className,
   isDesktop,
   setOpen,
@@ -28,8 +28,8 @@ export function CreateSeasonForm({
 
   const currentSeason = media?.serie?.seasons[seasonIndex]
 
-  const form = useForm<CreateSeasonSchema>({
-    resolver: zodResolver(createSeasonSchema),
+  const form = useForm<SeasonSchema>({
+    resolver: zodResolver(seasonSchema),
     defaultValues: {
       episodes: currentSeason ? currentSeason.episodes : [
         {
@@ -46,7 +46,7 @@ export function CreateSeasonForm({
     name: 'episodes',
   })
 
-  async function handleCreateSeason(season: CreateSeasonSchema) {
+  async function handleCreateSeason(season: SeasonSchema) {
     const serie = media?.serie ?? { seasons: [] }
 
     if (currentSeason) {

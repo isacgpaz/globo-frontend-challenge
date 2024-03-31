@@ -6,7 +6,7 @@ import { useMediaMutation } from "@/modules/medias/get-media";
 import { Media } from "@/types/media";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { CreateMediaDialog } from "../create-media-dialog";
+import { MediaFormDialog } from "../media-form-dialog";
 
 export function MediasTable({ data }: { data: Omit<Media, 'movie' | 'serie' | 'director' | 'artists'>[] }) {
   const { setMedia, media: mediaFromContext } = useCreateMediaContext()
@@ -86,7 +86,7 @@ export function MediasTable({ data }: { data: Omit<Media, 'movie' | 'serie' | 'd
         </TableBody>
       </Table>
 
-      <CreateMediaDialog
+      <MediaFormDialog
         open={open}
         setOpen={setOpen}
         mode='update'

@@ -1,17 +1,17 @@
 'use client'
 
-import { CreateMediaSchema } from "@/app/(admin)/medias/create-media-dialog/schema";
+import { MediaSchema } from "@/app/(admin)/medias/media-form-dialog/schema";
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useMemo, useState } from "react";
 
 type CreateMediaContextProps = {
-  media: Partial<CreateMediaSchema & { id: string }> | undefined,
-  setMedia: Dispatch<SetStateAction<Partial<CreateMediaSchema & { id: string }> | undefined>>
+  media: Partial<MediaSchema & { id: string }> | undefined,
+  setMedia: Dispatch<SetStateAction<Partial<MediaSchema & { id: string }> | undefined>>
 }
 
 export const CreateMediaContext = createContext({} as CreateMediaContextProps)
 
 export function CreateMediaProvider({ children }: PropsWithChildren) {
-  const [media, setMedia] = useState<Partial<CreateMediaSchema & { id: string }> | undefined>(undefined);
+  const [media, setMedia] = useState<Partial<MediaSchema & { id: string }> | undefined>(undefined);
 
   const createMediaContext: CreateMediaContextProps = useMemo(() => ({
     media,

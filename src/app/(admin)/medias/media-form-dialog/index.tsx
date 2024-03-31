@@ -4,10 +4,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useState } from "react";
-import { CreateMediaForm } from "./create-media-form";
-import { CreateSeasonDialog } from "./create-season-dialog";
+import { CreateMediaForm } from "./media-form";
+import { SeasonFormDialog } from "./season-form-dialog";
 
-export function CreateMediaDialog({
+export function MediaFormDialog({
   open,
   setOpen,
   mode
@@ -20,7 +20,7 @@ export function CreateMediaDialog({
     "only screen and (min-width: 768px)"
   );
 
-  const [createSeasonDialogOpen, setCreateSeasonDialogOpen] = useState(false)
+  const [seasonFormDialogOpen, setSeasonFormDialogOpen] = useState(false)
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState<number>(0)
 
   if (isDesktop) {
@@ -37,18 +37,18 @@ export function CreateMediaDialog({
             <CreateMediaForm
               isDesktop
               setOpen={setOpen}
-              setCreateSeasonDialogOpen={setCreateSeasonDialogOpen}
+              setSeasonFormDialogOpen={setSeasonFormDialogOpen}
               setSelectedSeasonIndex={setSelectedSeasonIndex}
               mode={mode}
             />
           </DialogContent>
         </Dialog>
 
-        <CreateSeasonDialog
-          open={createSeasonDialogOpen}
+        <SeasonFormDialog
+          open={seasonFormDialogOpen}
           setOpen={(open) => {
             setOpen(!open)
-            setCreateSeasonDialogOpen(open)
+            setSeasonFormDialogOpen(open)
           }}
           seasonIndex={selectedSeasonIndex}
           isDesktop
@@ -71,18 +71,18 @@ export function CreateMediaDialog({
             className="px-6"
             isDesktop={false}
             setOpen={setOpen}
-            setCreateSeasonDialogOpen={setCreateSeasonDialogOpen}
+            setSeasonFormDialogOpen={setSeasonFormDialogOpen}
             setSelectedSeasonIndex={setSelectedSeasonIndex}
             mode={mode}
           />
         </DrawerContent>
       </Drawer>
 
-      <CreateSeasonDialog
-        open={createSeasonDialogOpen}
+      <SeasonFormDialog
+        open={seasonFormDialogOpen}
         setOpen={(open) => {
           setOpen(!open)
-          setCreateSeasonDialogOpen(open)
+          setSeasonFormDialogOpen(open)
         }}
         seasonIndex={selectedSeasonIndex}
         isDesktop={false}

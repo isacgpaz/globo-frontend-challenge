@@ -26,27 +26,28 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { CreateMediaSchema, createMediaSchema } from "./schema";
+import { MediaSchema, mediaSchema } from "./schema";
 
 export function CreateMediaForm({
   className,
   isDesktop,
   setOpen,
-  setCreateSeasonDialogOpen,
+  setSeasonFormDialogOpen,
   setSelectedSeasonIndex,
   mode
 }: React.ComponentProps<"form"> & {
   isDesktop: boolean,
   setOpen: (open: boolean) => void,
-  setCreateSeasonDialogOpen: (open: boolean) => void,
+  setSeasonFormDialogOpen: (open: boolean) => void,
   setSelectedSeasonIndex: (index: number) => void,
   mode?: 'update' | 'create',
 }) {
   const { media, setMedia } = useCreateMediaContext()
 
-  const form = useForm<CreateMediaSchema>({
-    resolver: zodResolver(createMediaSchema),
+  const form = useForm<MediaSchema>({
+    resolver: zodResolver(mediaSchema),
     defaultValues: {
+      id: media?.id ?? undefined,
       title: media?.title ?? '',
       description: media?.description ?? '',
       releaseDate: media?.releaseDate ?? undefined,
@@ -96,7 +97,7 @@ export function CreateMediaForm({
 
   const isPending = isCreateMediaPending && isUpdateMediaPending
 
-  async function handleCreateMedia(values: CreateMediaSchema) {
+  async function handleCreateMedia(values: MediaSchema) {
     let mediaData = {
       ...values,
       releaseDate: dayjs(values.releaseDate).toISOString()
@@ -109,6 +110,7 @@ export function CreateMediaForm({
     if (values.type === MediaType.SERIE) {
       delete mediaData.movie
     }
+
 
     if (mode === 'update' && media?.id) {
       updateMedia({
@@ -439,7 +441,7 @@ export function CreateMediaForm({
                               onClick={() => {
                                 setSelectedSeasonIndex(index)
                                 setMedia(values)
-                                setCreateSeasonDialogOpen(true)
+                                setSeasonFormDialogOpen(true)
                                 setOpen(false)
                               }}
                             >
@@ -458,7 +460,7 @@ export function CreateMediaForm({
                     onClick={() => {
                       setSelectedSeasonIndex(form.watch('serie.seasons')?.length ?? 0)
                       setMedia(values)
-                      setCreateSeasonDialogOpen(true)
+                      setSeasonFormDialogOpen(true)
                       setOpen(false)
                     }}
                   >

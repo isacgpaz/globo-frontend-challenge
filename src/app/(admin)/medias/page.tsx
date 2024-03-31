@@ -9,7 +9,7 @@ import { useIsClient } from "@uidotdev/usehooks";
 import { Clapperboard } from "lucide-react";
 import { Fragment, useState } from "react";
 import { AdminMediasList } from "./admin-medias-list";
-import { CreateMediaDialog } from "./create-media-dialog";
+import { MediaFormDialog } from "./media-form-dialog";
 
 export default function Medias() {
   const { user } = useAuthContext()
@@ -55,7 +55,7 @@ function CreateMedia() {
         Novo
       </Button>
 
-      <CreateMediaDialog
+      <MediaFormDialog
         open={open}
         setOpen={setOpen}
         mode="create"

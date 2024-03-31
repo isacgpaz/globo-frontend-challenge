@@ -2,9 +2,9 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { CreateSeasonForm } from "./create-season-form";
+import { SeasonForm } from "./season-form";
 
-export function CreateSeasonDialog({
+export function SeasonFormDialog({
   open,
   setOpen,
   seasonIndex,
@@ -23,7 +23,7 @@ export function CreateSeasonDialog({
             <DialogTitle className="text-2xl">Temporada {seasonIndex + 1}</DialogTitle>
           </DialogHeader>
 
-          <CreateSeasonForm
+          <SeasonForm
             isDesktop
             setOpen={setOpen}
             seasonIndex={seasonIndex}
@@ -40,7 +40,7 @@ export function CreateSeasonDialog({
           <DrawerTitle className="text-2xl">Temporada {seasonIndex + 1}</DrawerTitle>
         </DrawerHeader>
 
-        <CreateSeasonForm
+        <SeasonForm
           className="px-6"
           isDesktop={false}
           setOpen={setOpen}

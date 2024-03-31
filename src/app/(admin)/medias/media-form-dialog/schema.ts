@@ -1,7 +1,8 @@
 import { MediaType, ParentalRating } from "@/types/media";
 import { z } from "zod";
 
-export const createMediaSchema = z.object({
+export const mediaSchema = z.object({
+  id: z.string().optional(),
   title: z.string({
     required_error: 'Título é obrigatório.',
     invalid_type_error: 'Título é obrigatório.',
@@ -70,7 +71,7 @@ export const createMediaSchema = z.object({
   }).optional()
 })
 
-export const createSeasonSchema = z.object({
+export const seasonSchema = z.object({
   episodes: z.array(z.object({
     title: z.string({
       required_error: 'Título é obrigatório.',
@@ -88,5 +89,5 @@ export const createSeasonSchema = z.object({
   }))
 })
 
-export type CreateMediaSchema = z.infer<typeof createMediaSchema>
-export type CreateSeasonSchema = z.infer<typeof createSeasonSchema>
+export type MediaSchema = z.infer<typeof mediaSchema>
+export type SeasonSchema = z.infer<typeof seasonSchema>
