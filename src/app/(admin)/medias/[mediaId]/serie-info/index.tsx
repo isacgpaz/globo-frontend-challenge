@@ -11,7 +11,7 @@ export function SerieInfo({
   const selectedSeason = serie.seasons.find((season) => season.id === selectedSeasonId)
 
   return (
-    <div className="px-6 mt-6">
+    <div className="px-6 mt-6 max-w-5xl mx-auto">
       <span className="font-medium ">
         Temporadas
       </span>

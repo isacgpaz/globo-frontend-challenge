@@ -37,7 +37,7 @@ export default function Media() {
     }
 
     return (
-      <div className="bg-gray-900 text-white min-h-screen mb-24">
+      <div className="bg-gray-900 text-white min-h-screen pb-24">
         <MediaCover
           title={media.title}
           duration={duration}
