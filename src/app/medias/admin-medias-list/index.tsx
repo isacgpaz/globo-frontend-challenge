@@ -1,6 +1,7 @@
 'use client'
 
 import { Loader } from "@/components/loader";
+import { MediaFiltersDialog } from "@/components/medias-filters-dialog";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MediaFiltersDialog } from "../../../../components/medias-filters-dialog";
 import { MediasTable } from "../medias-table";
 import { MediaFiltersSchema, mediaFiltersSchema, mediaFiltersType } from "./schema";
 

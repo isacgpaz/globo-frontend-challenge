@@ -13,7 +13,7 @@ import { useDirectors } from "@/modules/directors/list-directors";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { MediaFiltersSchema } from "../../app/(admin)/medias/admin-medias-list/schema";
+import { MediaFiltersSchema } from "./schema";
 
 export function MediaFiltersForm({
   className,

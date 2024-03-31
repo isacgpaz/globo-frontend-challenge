@@ -1,6 +1,6 @@
 'use client'
 
-import { MediaSchema } from "@/app/(admin)/medias/media-form-dialog/schema";
+import { MediaSchema } from "@/app/medias/media-form-dialog/schema";
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useContext, useMemo, useState } from "react";
 
 type CreateMediaContextProps = {
