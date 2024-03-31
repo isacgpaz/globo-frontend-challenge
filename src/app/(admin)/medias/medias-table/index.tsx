@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
 import { useCreateMediaContext } from "@/contexts/create-media-context";
+import { useMediaMutation } from "@/modules/medias/get-media";
 import { Media } from "@/types/media";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -58,7 +59,7 @@ export function MediasTable({ data }: { data: Omit<Media, 'movie' | 'serie' | 'd
           <TableRow>
             <TableHead>#</TableHead>
             <TableHead>Título</TableHead>
-            <TableHead>Ano de lançamento</TableHead>
+            <TableHead>Data de lançamento</TableHead>
             <TableHead>Opções</TableHead>
           </TableRow>
         </TableHeader>
