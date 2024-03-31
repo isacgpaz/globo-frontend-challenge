@@ -1,37 +1,30 @@
+import { RateSelect } from "@/components/rate-select";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { useAuthContext } from "@/contexts/auth-context";
 import { queryClient } from "@/lib/query-client";
 import { useEvaluateMedia } from "@/modules/medias/evaluate-media";
-import { Star } from "lucide-react";
+import { useVerifyEvaluation } from "@/modules/medias/verify-evaluation";
 import { useEffect, useState } from "react";
 
 export function MediaEvaluation({
   rate = 0,
-  isDisabled = false,
   mediaId
 }: {
   rate?: number;
-  isDisabled?: boolean,
   mediaId: string
 }) {
+  const { user } = useAuthContext()
+  const [isDisabled, setIsDisabled] = useState(true)
   const [rating, setRating] = useState(0);
 
+  const { data: verifyEvaluation } = useVerifyEvaluation(mediaId)
   const { mutate: evaluateMedia } = useEvaluateMedia()
 
-  useEffect(() => {
-    if (rate) {
-      setRating(rate)
-    }
-  }, [rate])
-
-  const handleMouseOver = (index: number) => {
-    setRating(index);
-  };
-
-  const handleClick = (index: number) => {
-    setRating(index);
+  function handleEvaluateMedia() {
     evaluateMedia({
       mediaId,
-      rate: index
+      rate: rating
     }, {
       onSuccess() {
         toast({
@@ -42,35 +35,73 @@ export function MediaEvaluation({
         queryClient.invalidateQueries({
           queryKey: ['verify-evaluation']
         })
+
+        queryClient.invalidateQueries({
+          queryKey: ['media', mediaId]
+        })
+
+        setIsDisabled(true)
       }
     })
   };
 
+  useEffect(() => {
+    if (rate || isDisabled) {
+      setRating(rate)
+    }
+  }, [rate, isDisabled])
+
   return (
-    <div className="flex items-center gap-2">
-      <ul className="flex gap-1 mt-2">
-        {[1, 2, 3, 4].map((index) => (
-          <li
-            key={index}
-            className="cursor-pointer"
-          >
-            <button
-              onMouseOver={() => !isDisabled && handleMouseOver(index)}
-              onClick={() => !isDisabled && handleClick(index)}
-            >
-              <Star
-                className="w-5 h-5"
-                fill={index <= rating ? "orange" : "white"}
-              />
+    <div>
+      <div className="flex items-center gap-2">
+        <RateSelect
+          rating={rating}
+          setRating={setRating}
+          isDisabled={isDisabled}
+        />
 
-            </button>
-          </li>
-        ))}
-      </ul>
+        {user && verifyEvaluation?.evaluationAvalable && (
+          <>
+            {isDisabled ? (
+              <Button
+                size='sm'
+                className="mt-2 transition-all hover:no-underline hover:scale-90"
+                variant='link'
+                onClick={() => setIsDisabled(false)}
+              >
+                Avaliar
+              </Button>
+            ) : (
+              <>
+                <Button
+                  size='sm'
+                  className="mt-2 transition-all hover:no-underline hover:scale-90"
+                  variant='link'
+                  onClick={handleEvaluateMedia}
+                >
+                  Salvar avaliação
+                </Button>
 
-      <p className="block mt-2 text-xs text-primary">
-        <strong className="text-base">{rating}</strong>/4
-      </p>
+                <Button
+                  size='sm'
+                  className="mt-2 text-white transition-all hover:no-underline hover:scale-90"
+                  variant='link'
+                  onClick={() => setIsDisabled(true)}
+                >
+                  Cancelar
+                </Button>
+
+              </>
+            )}
+          </>
+        )}
+      </div>
+
+      {verifyEvaluation?.rate && (
+        <span className="text-xs text-white">
+          Sua nota: {verifyEvaluation.rate}
+        </span>
+      )}
     </div>
   )
 }

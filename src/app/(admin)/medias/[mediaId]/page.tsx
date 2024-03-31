@@ -4,7 +4,6 @@ import { Loader } from "@/components/loader";
 import { useMedia } from "@/modules/medias/get-media";
 import { MediaType } from "@/types/media";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
 import { MediaCover } from "./media-cover";
 import { MediaInfo } from "./media-info";
 import { SerieInfo } from "./serie-info";
@@ -12,15 +11,7 @@ import { SerieInfo } from "./serie-info";
 export default function Media() {
   const params = useParams<{ mediaId: string }>()
 
-  const { mutate, isPending, data: media } = useMedia()
-
-  const getMedia = useCallback(() => {
-    mutate(params.mediaId)
-  }, [mutate, params.mediaId])
-
-  useEffect(() => {
-    getMedia()
-  }, [getMedia])
+  const { data: media, isPending } = useMedia(params.mediaId)
 
   if (isPending) {
     return (

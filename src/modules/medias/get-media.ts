@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import { Media } from "@/types/media";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export async function getMedia(mediaId: string) {
   const response = await api.get<{
@@ -14,7 +14,14 @@ export async function getMedia(mediaId: string) {
   }
 }
 
-export const useMedia = () => {
+export const useMedia = (mediaId: string) => {
+  return useQuery({
+    queryKey: ['media', mediaId],
+    queryFn: () => getMedia(mediaId)
+  })
+}
+
+export const useMediaMutation = () => {
   return useMutation({
     mutationFn: (mediaId: string) => getMedia(mediaId),
   })

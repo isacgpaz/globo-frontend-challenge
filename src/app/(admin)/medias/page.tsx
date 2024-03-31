@@ -7,7 +7,7 @@ import { CreateMediaProvider, useCreateMediaContext } from "@/contexts/create-me
 import { AccessLevel } from "@/types/user";
 import { useIsClient } from "@uidotdev/usehooks";
 import { Clapperboard } from "lucide-react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { AdminMediasList } from "./admin-medias-list";
 import { CreateMediaDialog } from "./create-media-dialog";
 
@@ -19,24 +19,11 @@ export default function Medias() {
     return null
   }
 
-  if (user?.accessLevel === AccessLevel.USER) {
-    return (
-      <div className="bg-gray-900 text-white min-h-screen p-6">
-        <div className="lg:max-w-5xl mx-auto">
-          <header className="flex justify-between items-center gap-4 mb-6">
-            <h2 className="font-medium text-xl">
-              Mídias
-            </h2>
-          </header>
-
-          <MediasList />
-        </div>
-      </div>
-    )
-  }
+  const isAdmin = user?.accessLevel === AccessLevel.ADMIN
+  const Wrapper = isAdmin ? CreateMediaProvider : Fragment
 
   return (
-    <CreateMediaProvider>
+    <Wrapper>
       <div className="bg-gray-900 text-white min-h-screen p-6">
         <div className="lg:max-w-5xl mx-auto">
           <header className="flex justify-between items-center gap-4 mb-6">
@@ -44,13 +31,13 @@ export default function Medias() {
               Mídias
             </h2>
 
-            <CreateMedia />
+            {isAdmin && <CreateMedia />}
           </header>
 
-          <AdminMediasList />
+          {isAdmin ? <AdminMediasList /> : <MediasList />}
         </div>
       </div>
-    </CreateMediaProvider>
+    </Wrapper>
   )
 }
 

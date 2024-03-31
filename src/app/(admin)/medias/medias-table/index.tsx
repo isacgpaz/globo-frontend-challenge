@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
 import { useCreateMediaContext } from "@/contexts/create-media-context";
-import { useMedia } from "@/modules/medias/get-media";
 import { Media } from "@/types/media";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -12,7 +11,7 @@ export function MediasTable({ data }: { data: Omit<Media, 'movie' | 'serie' | 'd
   const { setMedia, media: mediaFromContext } = useCreateMediaContext()
   const [open, setOpen] = useState(false);
 
-  const { mutateAsync: getMedia, isPending } = useMedia()
+  const { mutateAsync: getMedia, isPending } = useMediaMutation()
 
   async function selectMedia(selectedMediaId: string) {
     setMedia(undefined)
