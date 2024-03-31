@@ -1,6 +1,7 @@
 import { useAuthContext } from "@/contexts/auth-context";
 import { AlignLeft, CircleArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { SignInDialog } from "../sign-in-dialog";
 import { SignOutDialog } from "../sign-out-dialog";
 import { Button } from "../ui/button";
@@ -10,9 +11,10 @@ import { NavList } from "./nav-list";
 
 export function HeaderDrawer() {
   const { user } = useAuthContext();
+  const [open, onOpenChange] = useState(false)
 
   return (
-    <Drawer direction="left">
+    <Drawer direction="left" open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>
         <Button size='icon' variant='ghost' className="lg:hidden text-primary-foreground">
           <AlignLeft className="w-4 h-4" />
@@ -39,7 +41,7 @@ export function HeaderDrawer() {
           </DrawerHeader>
 
           <div className="px-5 flex flex-col flex-1 mb-4">
-            <NavList />
+            <NavList closeDrawer={() => onOpenChange(false)} />
 
             {user ? <SignOutDialog /> : <SignInDialog />}
           </div>

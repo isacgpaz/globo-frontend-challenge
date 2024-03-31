@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { ADMIN_NAV_LINKS, PUBLIC_NAV_LINKS } from "./nav-links";
 
-export function NavList() {
+export function NavList({ closeDrawer }: { closeDrawer?: () => void }) {
   const { user } = useAuthContext();
 
   return (
@@ -17,6 +17,7 @@ export function NavList() {
             variant='link'
             size='sm'
             className="px-0 text-slate-500 transition-all hover:no-underline hover:text-primary hover:scale-110"
+            onClick={closeDrawer}
           >
             <Link href='/' className="flex">
               <Home className='w-4 h-4 mr-2' />
@@ -33,6 +34,7 @@ export function NavList() {
                 variant='link'
                 size='sm'
                 className="px-0 text-slate-500 transition-all hover:no-underline hover:text-primary hover:scale-110"
+                onClick={closeDrawer}
               >
                 <Link href={href} className="flex">
                   <Icon className='w-4 h-4 mr-2' />
@@ -48,6 +50,7 @@ export function NavList() {
                   variant='link'
                   size='sm'
                   className="px-0 text-slate-500 transition-all hover:no-underline hover:text-primary hover:scale-110"
+                  onClick={closeDrawer}
                 >
                   <Link href={href} className="flex">
                     <Icon className='w-4 h-4 mr-2' />
